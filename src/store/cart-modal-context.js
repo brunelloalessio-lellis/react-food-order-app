@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer } from "react";
 import { useState } from "react";
+import CartModalContext from './cart-modal-context-cmp';
 
 const DUMMY_MEALS = [
   {
@@ -27,17 +28,6 @@ const DUMMY_MEALS = [
     price: 18.99,
   },
 ];
-
-const CartModalContext = React.createContext({
-  isCartOpened: false,
-  onHideCart: () => {},
-  onShowCart: () => {},
-  items: [],
-  totalAmount: 0,
-  addItem: (item) => {},
-  removeItem: (id) => {},
-  mealList: [],
-});
 
 const defaultCartState = {
   items: [],
@@ -141,4 +131,5 @@ export const CartModalContextProvider = (props) => {
   );
 };
 
-export default CartModalContext;
+
+

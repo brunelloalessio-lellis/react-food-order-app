@@ -2,7 +2,7 @@ import Card from "../UI/Card";
 import classes from "./AvaiableMeals.module.css";
 import MealItem from "./MealItem/MealItem";
 import { useContext } from "react";
-import CartModalContext from "../../store/cart-modal-context";
+import CartModalContext from "../../store/cart-modal-context-cmp";
 
 const AvaiableMeals = () => {
   const ctx = useContext(CartModalContext);

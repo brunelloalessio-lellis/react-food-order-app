@@ -1,4 +1,4 @@
-import CartModalContext from "../../store/cart-modal-context";
+import CartModalContext from "../../store/cart-modal-context-cmp";
 import CartIcon from "../Cart/CartIcon";
 import styles from "./HeaderCartButton.module.css";
 import { useContext } from "react";

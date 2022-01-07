@@ -1,7 +1,7 @@
 import Input from "../../UI/Input";
 import styles from "./MealItemForm.module.css";
 import { useContext, useRef } from "react";
-import CartModalContext from "../../../store/cart-modal-context";
+import CartModalContext from '../../../store/cart-modal-context-cmp';
 
 const MealItemForm = (props) => {
   const amountFieldRef = useRef();

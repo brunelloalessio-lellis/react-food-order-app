@@ -2,8 +2,7 @@ import { useContext } from "react";
 import Cart from "./components/Cart/Cart";
 import Header from "./components/Layout/Header";
 import Meals from "./components/Meals/Meals";
-import CartModalContext from "./store/cart-modal-context";
-import { CartModalContextProvider } from './context/cart-modal-context';
+import CartModalContext from "./store/cart-modal-context-cmp";
 
 function App() {
 
