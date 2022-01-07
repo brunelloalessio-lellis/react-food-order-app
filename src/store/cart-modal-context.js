@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from "react";
 import { useState } from "react";
-import CartModalContext from './cart-modal-context-cmp';
+import CartModalContext from "./cart-modal-context-cmp";
 
 const DUMMY_MEALS = [
   {
@@ -33,7 +33,7 @@ const defaultCartState = {
   items: [],
   totalAmount: 0,
   isOpened: false,
-  mealList: DUMMY_MEALS
+  mealList: DUMMY_MEALS,
 };
 
 const calculateAmount = (arrItems) => {
@@ -43,41 +43,44 @@ const calculateAmount = (arrItems) => {
 };
 
 const cartReducer = (state, action) => {
-  if (action.type === "ADD_ITEM") {
-    const newItemArray = [...state.items, action.item];
+  switch (action.type) {
 
-    return {
-      ...state,
-      items: newItemArray,
-      totalAmount: calculateAmount(newItemArray),
-    };
-  }
+    case "ADD_ITEM": {
+      const newItemArray = [...state.items, action.item];
 
-  if (action.type === "REMOVE_ITEM") {
-    const newItemArray = state.items.filter((item) => item.id === action.id);
+      return {
+        ...state,
+        items: newItemArray,
+        totalAmount: calculateAmount(newItemArray),
+      };
+    }
 
-    return {
-      ...state,
-      items: newItemArray,
-      totalAmount: calculateAmount(newItemArray),
-    };
-  }
+    case "REMOVE_ITEM": {
+      const newItemArray = state.items.filter((item) => item.id === action.id);
 
-  if(action.type === "HIDE_CART"){
-    return {
-      ...state,
-      isOpened:false
+      return {
+        ...state,
+        items: newItemArray,
+        totalAmount: calculateAmount(newItemArray),
+      };
+    }
+
+    case "HIDE_CHART": {
+      return {
+        ...state,
+        isOpened: false,
+      };
+    }
+    
+    case "SHOW_CHART": {
+      return {
+        ...state,
+        isOpened: true,
+      };
     }
   }
 
-  if(action.type === "SHOW_CART"){
-    return {
-      ...state,
-      isOpened:true
-    }
-  }
-
-  return;
+  return state;
 };
 
 export const CartModalContextProvider = (props) => {
@@ -89,13 +92,13 @@ export const CartModalContextProvider = (props) => {
 
   const onHideCart = () => {
     dispatchCartAction({
-      type: "HIDE_CART"
+      type: "HIDE_CART",
     });
   };
 
   const onShowCart = () => {
     dispatchCartAction({
-      type: "SHOW_CART"
+      type: "SHOW_CART",
     });
   };
 
@@ -130,6 +133,3 @@ export const CartModalContextProvider = (props) => {
     </CartModalContext.Provider>
   );
 };
-
-
-
