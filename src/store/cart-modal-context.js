@@ -36,9 +36,7 @@ const defaultCartState = {
 };
 
 const calculateAmount = (arrItems) => {
-  return arrItems.reduce((curNumber, item) => {
-    return curNumber + item.amount;
-  }, 0);
+  return arrItems.reduce((curNumber, item) => curNumber + item.amount, 0);
 };
 
 const cartReducer = (state, action) => {
@@ -87,7 +85,6 @@ const cartReducer = (state, action) => {
       };
 
     case "TOGGLE_CART_VISIBILITY":
-      console.log(state, action);
       return {
         ...state,
         isOpened: action.open,
