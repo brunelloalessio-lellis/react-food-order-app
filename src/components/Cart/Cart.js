@@ -7,6 +7,7 @@ import CartItem from "./CartItem/CartItem";
 const Cart = (props) => {
   const ctx = useContext(CartModalContext);
   let totalAmount = 0;
+
   const cartItems = ctx.items.map((item) => {
     totalAmount += item.amount * item.price;
 

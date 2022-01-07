@@ -44,8 +44,19 @@ const calculateAmount = (arrItems) => {
 const cartReducer = (state, action) => {
   switch (action.type) {
     case "ADD_ITEM":
-      action.item.id=new Date().getTime().toString()
+      const itemAddFinder = state.items.find(
+        (item) => item.name === action.item.name
+      );
 
+      if (itemAddFinder) {
+        itemAddFinder.amount += action.item.amount;
+        return {
+          ...state,
+          totalAmount: calculateAmount(state.items),
+        };
+      }
+
+      action.item.id = new Date().getTime().toString();
       const newItemArray = [...state.items, action.item];
 
       return {
@@ -55,6 +66,16 @@ const cartReducer = (state, action) => {
       };
 
     case "REMOVE_ITEM":
+      const itemToRemove = state.items.find((item) => item.id === action.id);
+
+      if (itemToRemove.amount > 1) {
+        itemToRemove.amount -= 1;
+        return {
+          ...state,
+          totalAmount: calculateAmount(state.items),
+        };
+      }
+
       const removedItemArray = state.items.filter(
         (item) => item.id !== action.id
       );
