@@ -8,7 +8,7 @@ const Cart = (props) => {
   let totalAmount = 0;
   const cartItems = ctx.items.map((item) => {
     totalAmount += item.amount * item.price;
-    return <li>{item.name}</li>;
+    return <li>{item.name} x {item.amount}</li>;
   });
 
   return (
