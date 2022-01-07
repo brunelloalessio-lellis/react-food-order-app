@@ -1,5 +1,7 @@
 import styles from "./Cart.module.css";
 import Modal from '../UI/Modal';
+import { useContext } from 'react';
+import CartModalContext from "../../context/cart-modal-context";
 
 const Cart = (props) => {
   const cartItems = [
@@ -11,6 +13,8 @@ const Cart = (props) => {
     },
   ].map((item) => <li>{item.name}</li>);
 
+  const ctx = useContext(CartModalContext)
+
   return (
     <Modal>
       <ul className={styles['card-items']}>{cartItems}</ul>
@@ -19,7 +23,7 @@ const Cart = (props) => {
           <span>35.92</span>
       </div>
       <div className={styles.actions}>
-          <button className={styles['button--alt']}>Close</button>
+          <button className={styles['button--alt']} onClick={ctx.onHideCart}>Close</button>
           <button className={styles.button}>Order</button>
       </div>
     </Modal>

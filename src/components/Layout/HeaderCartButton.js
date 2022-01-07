@@ -1,9 +1,13 @@
+import CartModalContext from '../../context/cart-modal-context'
 import CartIcon from '../Cart/CartIcon'
 import styles from './HeaderCartButton.module.css'
+import { useContext } from 'react';
 
-const HeaderCartButton = () => {
+const HeaderCartButton = (props) => {
 
-    return <button className={styles.button}>
+    const ctx = useContext(CartModalContext)
+
+    return <button className={styles.button} onClick={ctx.onShowCart}>
         <span className={styles.icon}>
             <CartIcon/>
         </span>
