@@ -16,7 +16,7 @@ const Cart = (props) => {
   const ctx = useContext(CartModalContext)
 
   return (
-    <Modal>
+    <Modal onBackdropClick={ctx.onHideCart}>
       <ul className={styles['card-items']}>{cartItems}</ul>
       <div className={styles.total}>
           <span>Total Amount</span>
