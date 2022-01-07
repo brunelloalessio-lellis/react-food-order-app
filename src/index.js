@@ -1,9 +1,12 @@
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 
-import './index.css';
-import App from './App';
-import { CartModalContextProvider } from './context/cart-modal-context';
+import "./index.css";
+import App from "./App";
+import { CartModalContextProvider } from "./store/cart-modal-context";
 
-ReactDOM.render(<CartModalContextProvider>
+ReactDOM.render(
+  <CartModalContextProvider>
     <App />
-</CartModalContextProvider>, document.getElementById('root'));
+  </CartModalContextProvider>,
+  document.getElementById("root")
+);

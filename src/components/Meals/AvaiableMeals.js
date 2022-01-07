@@ -1,36 +1,13 @@
 import Card from "../UI/Card";
 import classes from "./AvaiableMeals.module.css";
 import MealItem from "./MealItem/MealItem";
-
-const DUMMY_MEALS = [
-  {
-    id: "m1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-    price: 22.99,
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    description: "A german specialty!",
-    price: 16.5,
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    description: "American, raw, meaty",
-    price: 12.99,
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    description: "Healthy...and green...",
-    price: 18.99,
-  },
-];
+import { useContext } from "react";
+import CartModalContext from "../../store/cart-modal-context";
 
 const AvaiableMeals = () => {
-  const mealsList = DUMMY_MEALS.map((meal) => {
+  const ctx = useContext(CartModalContext);
+
+  const mealsList = ctx.mealList.map((meal) => {
     return (
       <MealItem
         key={meal.id}
