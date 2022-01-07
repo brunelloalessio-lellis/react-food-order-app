@@ -19,7 +19,7 @@ const MealItemForm = (props) => {
 
     const newItemToCart = {
       ...myMeal,
-      amount: parseInt(amountFieldRef.current.value),
+      amount: parseInt(amountFieldRef.current.value)
     };
 
     ctx.addItem(newItemToCart);

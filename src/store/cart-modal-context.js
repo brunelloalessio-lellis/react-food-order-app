@@ -1,5 +1,4 @@
-import React, { useEffect, useReducer } from "react";
-import { useState } from "react";
+import React, { useReducer } from "react";
 import CartModalContext from "./cart-modal-context-cmp";
 
 const DUMMY_MEALS = [
@@ -44,8 +43,9 @@ const calculateAmount = (arrItems) => {
 
 const cartReducer = (state, action) => {
   switch (action.type) {
+    case "ADD_ITEM":
+      action.item.id=new Date().getTime().toString()
 
-    case "ADD_ITEM": {
       const newItemArray = [...state.items, action.item];
 
       return {
@@ -53,34 +53,28 @@ const cartReducer = (state, action) => {
         items: newItemArray,
         totalAmount: calculateAmount(newItemArray),
       };
-    }
 
-    case "REMOVE_ITEM": {
-      const newItemArray = state.items.filter((item) => item.id === action.id);
+    case "REMOVE_ITEM":
+      const removedItemArray = state.items.filter(
+        (item) => item.id !== action.id
+      );
 
       return {
         ...state,
-        items: newItemArray,
-        totalAmount: calculateAmount(newItemArray),
+        items: removedItemArray,
+        totalAmount: calculateAmount(removedItemArray),
       };
-    }
 
-    case "HIDE_CHART": {
+    case "TOGGLE_CART_VISIBILITY":
+      console.log(state, action);
       return {
         ...state,
-        isOpened: false,
+        isOpened: action.open,
       };
-    }
-    
-    case "SHOW_CHART": {
-      return {
-        ...state,
-        isOpened: true,
-      };
-    }
+
+    default:
+      return state;
   }
-
-  return state;
 };
 
 export const CartModalContextProvider = (props) => {
@@ -88,17 +82,18 @@ export const CartModalContextProvider = (props) => {
     cartReducer,
     defaultCartState
   );
-  const [mealList, setMealList] = useState(DUMMY_MEALS);
 
   const onHideCart = () => {
     dispatchCartAction({
-      type: "HIDE_CART",
+      type: "TOGGLE_CART_VISIBILITY",
+      open: false,
     });
   };
 
   const onShowCart = () => {
     dispatchCartAction({
-      type: "SHOW_CART",
+      type: "TOGGLE_CART_VISIBILITY",
+      open: true,
     });
   };
 
