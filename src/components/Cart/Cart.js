@@ -40,6 +40,17 @@ const Cart = (props) => {
     setFormVisible(true);
   };
 
+  const footerBarModalActions = (
+    <div className={styles.actions}>
+      <button className={styles["button--alt"]} onClick={ctx.onHideCart}>
+        Close
+      </button>
+      <button className={styles.button} onClick={onOrderClick}>
+        Order
+      </button>
+    </div>
+  );
+
   return (
     <Modal onBackdropClick={ctx.onHideCart}>
       <ul className={styles["cart-items"]}>{cartItems}</ul>
@@ -48,14 +59,7 @@ const Cart = (props) => {
         <span>${totalAmount.toFixed(2)}</span>
       </div>
       {formVisible && <Checkout />}
-      <div className={styles.actions}>
-        <button className={styles["button--alt"]} onClick={ctx.onHideCart}>
-          Close
-        </button>
-        <button className={styles.button} onClick={onOrderClick}>
-          Order
-        </button>
-      </div>
+      {!formVisible && footerBarModalActions}
     </Modal>
   );
 };
