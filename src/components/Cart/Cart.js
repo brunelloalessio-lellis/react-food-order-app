@@ -1,11 +1,13 @@
 import styles from "./Cart.module.css";
 import Modal from "../UI/Modal";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import CartModalContext from "../../store/cart-modal-context-cmp";
 import CartItem from "./CartItem/CartItem";
+import Checkout from "./Checkout";
 
 const Cart = (props) => {
   const ctx = useContext(CartModalContext);
+  const [formVisible, setFormVisible] = useState(false);
   let totalAmount = 0;
 
   const cartItems = ctx.items.map((item) => {
@@ -34,6 +36,10 @@ const Cart = (props) => {
     );
   });
 
+  const onOrderClick = () => {
+    setFormVisible(true);
+  };
+
   return (
     <Modal onBackdropClick={ctx.onHideCart}>
       <ul className={styles["cart-items"]}>{cartItems}</ul>
@@ -41,11 +47,14 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>${totalAmount.toFixed(2)}</span>
       </div>
+      {formVisible && <Checkout />}
       <div className={styles.actions}>
         <button className={styles["button--alt"]} onClick={ctx.onHideCart}>
           Close
         </button>
-        <button className={styles.button}>Order</button>
+        <button className={styles.button} onClick={onOrderClick}>
+          Order
+        </button>
       </div>
     </Modal>
   );
