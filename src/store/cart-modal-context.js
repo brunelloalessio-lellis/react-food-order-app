@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 import CartModalContext from "./cart-modal-context-cmp";
-import cartReducer from './cart-reducer';
+import cartReducer from "./cart-reducer";
 
 const defaultCartState = {
   items: [],
@@ -71,16 +71,14 @@ export const CartModalContextProvider = (props) => {
                 meals: [],
               });
             } else {
-
-              let listOfMeals = []
+              let listOfMeals = [];
 
               for (const key in jsonMeals) {
-                if (Object.hasOwnProperty.call(jsonMeals, key)) {
-                  const element = jsonMeals[key];
+                if (jsonMeals.hasOwnProperty(key)) {
                   listOfMeals.push({
                     id: key,
-                    ...element
-                  })
+                    ...jsonMeals[key],
+                  });
                 }
               }
 
