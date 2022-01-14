@@ -99,7 +99,7 @@ export const CartModalContextProvider = (props) => {
     if (!isLoaded && !isLoading && !error) {
       loadMealList();
     }
-  }, [isLoading, isLoaded]);
+  }, [isLoading, isLoaded, error]);
 
   return (
     <CartModalContext.Provider
