@@ -1,98 +1,15 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import CartModalContext from "./cart-modal-context-cmp";
-
-const DUMMY_MEALS = [
-  {
-    id: "m1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-    price: 22.99,
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    description: "A german specialty!",
-    price: 16.5,
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    description: "American, raw, meaty",
-    price: 12.99,
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    description: "Healthy...and green...",
-    price: 18.99,
-  },
-];
+import cartReducer from './cart-reducer';
 
 const defaultCartState = {
   items: [],
   totalAmount: 0,
   isOpened: false,
-  mealList: DUMMY_MEALS,
-};
-
-const calculateAmount = (arrItems) => {
-  return arrItems.reduce((curNumber, item) => curNumber + item.amount, 0);
-};
-
-const cartReducer = (state, action) => {
-  switch (action.type) {
-    case "ADD_ITEM":
-      const itemAddFinder = state.items.find(
-        (item) => item.name === action.item.name
-      );
-
-      if (itemAddFinder) {
-        itemAddFinder.amount += action.item.amount;
-        return {
-          ...state,
-          totalAmount: calculateAmount(state.items),
-        };
-      }
-
-      action.item.id = new Date().getTime().toString();
-      const newItemArray = [...state.items, action.item];
-
-      return {
-        ...state,
-        items: newItemArray,
-        totalAmount: calculateAmount(newItemArray),
-      };
-
-    case "REMOVE_ITEM":
-      const itemToRemove = state.items.find((item) => item.id === action.id);
-
-      if (itemToRemove.amount > 1) {
-        itemToRemove.amount -= 1;
-        return {
-          ...state,
-          totalAmount: calculateAmount(state.items),
-        };
-      }
-
-      const removedItemArray = state.items.filter(
-        (item) => item.id !== action.id
-      );
-
-      return {
-        ...state,
-        items: removedItemArray,
-        totalAmount: calculateAmount(removedItemArray),
-      };
-
-    case "TOGGLE_CART_VISIBILITY":
-      return {
-        ...state,
-        isOpened: action.open,
-      };
-
-    default:
-      return state;
-  }
+  mealList: [],
+  isLoaded: false,
+  error: "",
+  isLoading: false,
 };
 
 export const CartModalContextProvider = (props) => {
@@ -129,6 +46,63 @@ export const CartModalContextProvider = (props) => {
     });
   };
 
+  const loadMealList = () => {
+    const firebaseUrl =
+      "https://react-food-order-app-9345c-default-rtdb.firebaseio.com/meals.json";
+
+    const errorParsingOrLoadingMeals = () => {
+      dispatchCartAction({
+        type: "ERROR_LOADING_MEALS",
+      });
+    };
+
+    dispatchCartAction({
+      type: "LOADING_MEALS",
+    });
+
+    fetch(firebaseUrl)
+      .then((response) => {
+        response
+          .json()
+          .then((jsonMeals) => {
+            if (!jsonMeals) {
+              dispatchCartAction({
+                type: "LOAD_MEALS",
+                meals: [],
+              });
+            } else {
+
+              let listOfMeals = []
+
+              for (const key in jsonMeals) {
+                if (Object.hasOwnProperty.call(jsonMeals, key)) {
+                  const element = jsonMeals[key];
+                  listOfMeals.push({
+                    id: key,
+                    ...element
+                  })
+                }
+              }
+
+              dispatchCartAction({
+                type: "LOAD_MEALS",
+                meals: listOfMeals,
+              });
+            }
+          })
+          .catch(errorParsingOrLoadingMeals);
+      })
+      .catch(errorParsingOrLoadingMeals);
+  };
+
+  const { isLoading, isLoaded, error } = cartState;
+
+  useEffect(() => {
+    if (!isLoaded && !isLoading && !error) {
+      loadMealList();
+    }
+  }, [isLoading, isLoaded]);
+
   return (
     <CartModalContext.Provider
       value={{
@@ -140,6 +114,9 @@ export const CartModalContextProvider = (props) => {
         onShowCart: onShowCart,
         addItem: addItemToCartHandler,
         removeItem: removeItemFromCartHandler,
+        mealListLoaded: cartState.isLoaded,
+        mealListError: cartState.error,
+        mealListIsLoading: cartState.isLoading,
       }}
     >
       {props.children}
