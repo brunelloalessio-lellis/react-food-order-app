@@ -10,6 +10,10 @@ const Cart = (props) => {
   const [formVisible, setFormVisible] = useState(false);
   let totalAmount = 0;
 
+  const submitOrderHandler = (userData)=>{
+    console.log(userData)
+  }
+
   const cartItems = ctx.items.map((item) => {
     totalAmount += item.amount * item.price;
 
@@ -58,7 +62,7 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>${totalAmount.toFixed(2)}</span>
       </div>
-      {formVisible && <Checkout />}
+      {formVisible && <Checkout submitOrderHandler={submitOrderHandler}/>}
       {!formVisible && footerBarModalActions}
     </Modal>
   );

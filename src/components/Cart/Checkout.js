@@ -43,6 +43,13 @@ const Checkout = (props) => {
     }
 
     //valid form
+
+    props.submitOrderHandler({
+        name,
+        street,
+        city,
+        postal
+    });
   };
 
   const nameCls = `${classes.control} ${
