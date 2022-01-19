@@ -12,6 +12,15 @@ const Cart = (props) => {
 
   const submitOrderHandler = (userData)=>{
     console.log(userData)
+
+    fetch('https://react-food-order-app-9345c-default-rtdb.firebaseio.com/orders.json',{
+      method:'POST',
+      body: JSON.stringify({
+        user:userData,
+        orderedItems: ctx.items
+      })
+    })
+
   }
 
   const cartItems = ctx.items.map((item) => {
