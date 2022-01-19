@@ -8,20 +8,29 @@ import Checkout from "./Checkout";
 const Cart = (props) => {
   const ctx = useContext(CartModalContext);
   const [formVisible, setFormVisible] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [didSummit, setDidSummit] = useState(false);
   let totalAmount = 0;
 
-  const submitOrderHandler = (userData)=>{
-    console.log(userData)
+  const submitOrderHandler = (userData) => {
+    setIsSubmitting(true);
 
-    fetch('https://react-food-order-app-9345c-default-rtdb.firebaseio.com/orders.json',{
-      method:'POST',
-      body: JSON.stringify({
-        user:userData,
-        orderedItems: ctx.items
+    fetch(
+      "https://react-food-order-app-9345c-default-rtdb.firebaseio.com/orders.json",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          user: userData,
+          orderedItems: ctx.items,
+        }),
+      }
+    )
+      .then((response) => {
+        setIsSubmitting(false);
+        setDidSummit(true);
       })
-    })
-
-  }
+      .catch(() => {});
+  };
 
   const cartItems = ctx.items.map((item) => {
     totalAmount += item.amount * item.price;
@@ -64,15 +73,34 @@ const Cart = (props) => {
     </div>
   );
 
-  return (
-    <Modal onBackdropClick={ctx.onHideCart}>
-      <ul className={styles["cart-items"]}>{cartItems}</ul>
+  const cartModalContent = (
+    <>
+      <ul className={styles["cart-items"]}> {cartItems} </ul>{" "}
       <div className={styles.total}>
-        <span>Total Amount</span>
-        <span>${totalAmount.toFixed(2)}</span>
+        <span> Total Amount </span> <span> $ {totalAmount.toFixed(2)} </span>{" "}
+      </div>{" "}
+      {formVisible && <Checkout submitOrderHandler={submitOrderHandler} />}{" "}
+      {!formVisible && footerBarModalActions}{" "}
+    </>
+  );
+
+  const isSubmittingContent = <p>Sending order data ...</p>;
+  const didSubmitContent = (
+    <>
+      <p>Sucessfully sent order!</p>
+      <div className={styles.actions}>
+        <button className={styles["button--alt"]} onClick={ctx.clearCart}>
+          Close
+        </button>
       </div>
-      {formVisible && <Checkout submitOrderHandler={submitOrderHandler}/>}
-      {!formVisible && footerBarModalActions}
+    </>
+  );
+
+  return (
+    <Modal onBackdropClick={didSummit ? ctx.clearCart : ctx.onHideCart}>
+      {!isSubmitting && !didSummit && cartModalContent}
+      {isSubmitting && !didSummit && isSubmittingContent}
+      {didSummit && didSubmitContent}
     </Modal>
   );
 };

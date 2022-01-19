@@ -46,6 +46,12 @@ export const CartModalContextProvider = (props) => {
     });
   };
 
+  const clearCart = () => {
+    dispatchCartAction({
+      type: "CLEAN_CART",
+    });
+  };
+
   const loadMealList = () => {
     const firebaseUrl =
       "https://react-food-order-app-9345c-default-rtdb.firebaseio.com/meals.json";
@@ -115,6 +121,7 @@ export const CartModalContextProvider = (props) => {
         mealListLoaded: cartState.isLoaded,
         mealListError: cartState.error,
         mealListIsLoading: cartState.isLoading,
+        clearCart: clearCart,
       }}
     >
       {props.children}

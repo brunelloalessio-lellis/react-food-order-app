@@ -77,6 +77,17 @@ const cartReducer = (state, action) => {
         mealList: action.meals,
       };
 
+    case "CLEAN_CART":
+      return {
+        items: [],
+        totalAmount: 0,
+        isOpened: false,
+        mealList: [],
+        isLoaded: false,
+        error: "",
+        isLoading: false,
+      };
+
     default:
       return state;
   }
